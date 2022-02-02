@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 
 const String accessToken = 'vsRtpYX-sOHlOV-tljYEPSbqABF7Q5Xy';
@@ -19,7 +19,7 @@ const String authRegistration =
 const String getListCategory =
     'http://ostest.whitetigersoft.ru/api/common/category/list';
 
-class AppApi {
+class baseApi {
   String totalQuestWithApiKey(String urlPath) {
     return urlPath + '?appKey=${AppKey}';
   }
@@ -34,20 +34,47 @@ class AppApi {
         response = await http.post(Uri.parse(urlPath), body: data);
         break;
     }
-    return json.decode(response.body);
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+      // print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
+    }
   }
 }
 
-var test = AppApi();
+class ProductFromQuest {
+  final int categoryId;
+  final String title;
+  final String imageUrl;
+  final int hasSubcategories;
+  final String fullName;
+  final String ?categoryDescription;
 
-void main() async {
-  var respone = await test.apiRequest(
-      test.totalQuestWithApiKey(getListCategory) +
+  const ProductFromQuest({
+    required this.categoryId,
+    required this.title,
+    required this.imageUrl,
+    required this.hasSubcategories,
+    required this.fullName,
+    required this.categoryDescription,
+  });
+
+  factory ProductFromQuest.fromJson(Map<String, dynamic> json) {
+    return ProductFromQuest(categoryId: json['categoryId'], title: json['title'],
+                            imageUrl: json['imageUrl'], hasSubcategories: json['hasSubcategories'],
+                            fullName: json['fullName'], categoryDescription: json['categoryDescription']);
+  }
+}
+
+Future<ProductFromQuest> getProducts(int index)  async{
+  var respone = await baseApi().apiRequest(
+      baseApi().totalQuestWithApiKey(getListCategory) +
           '&accessToken=${accessToken}',
       "GET");
-  print(respone["data"]["categories"]);
+  return ProductFromQuest.fromJson(respone["data"]["categories"][index]);
+  // print(product.title);
+  // print(product.categoryDescription);
+  // print(product.imageUrl);
 }
 
 // main() async {
