@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 
@@ -66,17 +67,50 @@ class ProductFromQuest {
   }
 }
 
-Future<ProductFromQuest> getProducts(int index)  async{
-  var respone = await baseApi().apiRequest(
+Future<int> getNumberOfProducts() async{
+  dynamic respone = await baseApi().apiRequest(
       baseApi().totalQuestWithApiKey(getListCategory) +
           '&accessToken=${accessToken}',
       "GET");
-  return ProductFromQuest.fromJson(respone["data"]["categories"][index]);
+  int lenOfElements = 0;
+  for (var i = 0; i < (respone["data"]["categories"].toString().length); i++) {
+    if (respone["data"]["categories"].toString()[i] == '}') {
+      lenOfElements++;
+    }
+  }
+  return lenOfElements;
+}
+
+Future<List<ProductFromQuest>> getProducts() async{
+  dynamic respone = await baseApi().apiRequest(
+      baseApi().totalQuestWithApiKey(getListCategory) +
+          '&accessToken=${accessToken}',
+      "GET");
+  int lenOfElements = 0;
+  for (var i = 0; i < (respone["data"]["categories"].toString().length); i++) {
+    if (respone["data"]["categories"].toString()[i] == '}') {
+      lenOfElements++;
+    }
+  }
+   List<ProductFromQuest> products = [];
+  for (var i = 0; i < lenOfElements; i++) {
+    ProductFromQuest temp = ProductFromQuest.fromJson(respone["data"]["categories"][i]);
+    print(temp.title);
+    products.add(temp);
+  }
+  return products;
   // print(product.title);
   // print(product.categoryDescription);
   // print(product.imageUrl);
 }
 
+
+void main(){
+  List<ProductFromQuest> t = [];
+  getProducts().then((value){
+    print(value.first.fullName);
+  });
+}
 // main() async {
 //   // print(await apiRequest(
 //   //     totalQuestWithApiKey(authSendCode), "POST", authSendCodeParams));
