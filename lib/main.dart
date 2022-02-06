@@ -14,10 +14,11 @@ void main() {
     home: Scaffold(
         body: Center(
           child: CategoryCards(),
-      // child: Column(
-      //   children: <Widget>[PannelControl(), CategoryCards()],
-      // ),
-    )),
+        // child: Column(
+        //   children: <Widget>[PannelControl(), CategoryCards()],
+        // ),
+      ),
+    ),
   ));
 }
 
@@ -47,18 +48,6 @@ class PannelControl extends StatelessWidget {
   }
 }
 
-class Card {
-  String title = "";
-  String description = "";
-  String price = "";
-
-  Card(String title, String description, String price) {
-    this.title = title;
-    this.description = description;
-    this.price = price;
-  }
-}
-
 class CategoryCards extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -79,7 +68,34 @@ class _CategoryCards extends State<CategoryCards> {
     setState(() { });
   }
 
-  //TODO: https://www.notion.so/whitetigersoft/c142becb80bf4191886e5334a2a13515
+  dynamic CategoryListItem(category,) {
+    return Container(
+      // move view/category_list_item.dart, CategoryListItem(category: category,)
+      padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
+      color: Colors.white60,
+      margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
+      child: Column(
+        children: [
+          Text(category.title, style: TextStyle(fontSize: 22)),
+          Image.network(category.imageUrl, width: 200),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text("200", style: TextStyle(fontSize: 20)),
+          )
+        ],
+      ),
+    );
+  }
+
+  ListView buildList(context, categories,){
+    return ListView.builder(
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        var category = categories[index];
+        return CategoryListItem(category);
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_categoryList == null) {
@@ -92,28 +108,7 @@ class _CategoryCards extends State<CategoryCards> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var categories = snapshot.data ?? [];
-            return ListView.builder(
-              //TODO: move to buildList(context, categories)
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  var category = categories[index];
-                  return Container(
-                    // move view/category_list_item.dart, CategoryListItem(category: category,)
-                      padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
-                      color: Colors.white60,
-                      margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
-                      child: Column(
-                        children: [
-                          Text(category.title, style: TextStyle(fontSize: 22)),
-                          Text(category.imageUrl,
-                              style: TextStyle(fontSize: 17)),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text("200", style: TextStyle(fontSize: 20)),
-                          )
-                        ],
-                      ));
-                });
+            return buildList(context, categories);
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
