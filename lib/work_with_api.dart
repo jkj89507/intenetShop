@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:http/http.dart' as http;
 
 const String accessToken = 'vsRtpYX-sOHlOV-tljYEPSbqABF7Q5Xy';
@@ -21,6 +19,7 @@ const String getListCategory =
     'http://ostest.whitetigersoft.ru/api/common/category/list';
 
 class baseApi {
+
   String totalQuestWithApiKey(String urlPath) {
     return urlPath + '?appKey=${AppKey}';
   }
@@ -28,18 +27,30 @@ class baseApi {
   Future apiRequest(String urlPath, String method, [Map? data]) async {
     var response;
     switch (method.toUpperCase()) {
-      case "GET":
-        response = await http.get(Uri.parse(urlPath));
+      case "GET": {
+        try {
+          response = await http.get(Uri.parse(urlPath), headers: {
+            "Access-Control-Allow-Origin": "*" // Required for CORS support to work
+          });
+        } catch (e){
+          print("apiRequestsGET: ${e.toString()}");
+        }
         break;
-      case "POST":
-        response = await http.post(Uri.parse(urlPath), body: data);
+      }
+      case "POST": {
+        try {
+          response = await http.post(Uri.parse(urlPath), body: data, headers: {
+            "Access-Control-Allow-Origin": "*"
+          });
+        } catch (e) {
+          print("apiRequestsPOST: ${e.toString()}");
+        }
         break;
+      }
     }
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
+    return json.decode(response.body);
       // print('Response status: ${response.statusCode}');
       // print('Response body: ${response.body}');
-    }
   }
 }
 
@@ -67,50 +78,30 @@ class ProductFromQuest {
   }
 }
 
-Future<int> getNumberOfProducts() async{
-  dynamic respone = await baseApi().apiRequest(
+Future<List<ProductFromQuest>> loadCategories() async {
+  dynamic response = await baseApi().apiRequest(
       baseApi().totalQuestWithApiKey(getListCategory) +
           '&accessToken=${accessToken}',
       "GET");
-  int lenOfElements = 0;
-  for (var i = 0; i < (respone["data"]["categories"].toString().length); i++) {
-    if (respone["data"]["categories"].toString()[i] == '}') {
-      lenOfElements++;
-    }
+  var categoryListData = response["data"]["categories"];
+  List<ProductFromQuest> categories = [];
+  for (var itemData in categoryListData) {
+    var category = ProductFromQuest.fromJson(itemData);
+    categories.add(category);
   }
-  return lenOfElements;
-}
-
-Future<List<ProductFromQuest>> getProducts() async{
-  dynamic respone = await baseApi().apiRequest(
-      baseApi().totalQuestWithApiKey(getListCategory) +
-          '&accessToken=${accessToken}',
-      "GET");
-  int lenOfElements = 0;
-  for (var i = 0; i < (respone["data"]["categories"].toString().length); i++) {
-    if (respone["data"]["categories"].toString()[i] == '}') {
-      lenOfElements++;
-    }
-  }
-   List<ProductFromQuest> products = [];
-  for (var i = 0; i < lenOfElements; i++) {
-    ProductFromQuest temp = ProductFromQuest.fromJson(respone["data"]["categories"][i]);
-    print(temp.title);
-    products.add(temp);
-  }
-  return products;
-  // print(product.title);
-  // print(product.categoryDescription);
-  // print(product.imageUrl);
+  return categories;
 }
 
 
-void main(){
-  List<ProductFromQuest> t = [];
-  getProducts().then((value){
-    print(value.first.fullName);
-  });
-}
+// main() {
+//   Future<List<ProductFromQuest>> test = loadCategories();
+//   test.then((value){
+//     for (var i = 0; i < value.length; i++) {
+//       print(value[i].fullName);
+//     }
+//   });
+// }
+
 // main() async {
 //   // print(await apiRequest(
 //   //     totalQuestWithApiKey(authSendCode), "POST", authSendCodeParams));

@@ -13,9 +13,10 @@ void main() {
   runApp(MaterialApp(
     home: Scaffold(
         body: Center(
-      child: Column(
-        children: <Widget>[PannelControl(), ProductCards()],
-      ),
+          child: CategoryCards(),
+      // child: Column(
+      //   children: <Widget>[PannelControl(), CategoryCards()],
+      // ),
     )),
   ));
 }
@@ -24,8 +25,6 @@ class PannelControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 500,
-        height: 40,
         color: Colors.deepOrangeAccent,
         child: ListView(
           scrollDirection: Axis.horizontal,
@@ -60,76 +59,67 @@ class Card {
   }
 }
 
-class ProductCards extends StatefulWidget {
+class CategoryCards extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ProductCards ();
+    return _CategoryCards();
   }
 }
 
-class _ProductCards extends State<ProductCards> {
-
-  late Future<List<ProductFromQuest>> _ListProducts;
-  late Future<int> _amountOfProducts;
-
+class _CategoryCards extends State<CategoryCards> {
+  late Future<List<ProductFromQuest>> _categoryList;
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _ListProducts = getProducts();
-    _amountOfProducts = getNumberOfProducts();
+    loadData();
   }
 
+  void loadData(){
+    _categoryList = loadCategories();
+    setState(() { });
+  }
+
+  //TODO: https://www.notion.so/whitetigersoft/c142becb80bf4191886e5334a2a13515
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 300,
-      child: FutureBuilder<List<ProductFromQuest>> (
-        future: _ListProducts,
+    if (_categoryList == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return FutureBuilder<List<ProductFromQuest>>(
+        future: _categoryList,
         builder: (context, snapshot) {
-          if (snapshot.hasData){
-            List<ProductFromQuest> products = snapshot.data ?? [];
+          if (snapshot.hasData) {
+            var categories = snapshot.data ?? [];
             return ListView.builder(
-                itemCount: products.length,
+              //TODO: move to buildList(context, categories)
+                itemCount: categories.length,
                 itemBuilder: (context, index) {
-                  ProductFromQuest product = products[index];
+                  var category = categories[index];
                   return Container(
+                    // move view/category_list_item.dart, CategoryListItem(category: category,)
                       padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
                       color: Colors.white60,
                       margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
-                      width: 100,
-                      height: 100,
-                      child: ListView(
-                        scrollDirection: Axis.vertical,
+                      child: Column(
                         children: [
-                          Text(product.title,
-                              style: TextStyle(fontSize: 22)),
-                          Text(product.imageUrl,
+                          Text(category.title, style: TextStyle(fontSize: 22)),
+                          Text(category.imageUrl,
                               style: TextStyle(fontSize: 17)),
                           ElevatedButton(
                             onPressed: () {},
-                            child: Text("200",
-                                style: TextStyle(fontSize: 20)),
+                            child: Text("200", style: TextStyle(fontSize: 20)),
                           )
                         ],
                       ));
-                }
-            );
-          }
-          else if (snapshot.hasError) {
+                });
+          } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
           return const CircularProgressIndicator();
         },
-      ),
     );
     throw UnimplementedError();
-  }
-}
-
-class ProductList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return throw UnimplementedError();
   }
 }
