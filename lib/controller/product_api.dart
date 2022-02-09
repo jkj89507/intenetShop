@@ -41,15 +41,6 @@ Future<List<ProductsFromQuest>> loadProducts() async {
   List<ProductsFromQuest> products = [];
   for (var itemData in productsListData) {
     var product = ProductsFromQuest.fromJson(itemData);
-    print(product.productId);
-    print(product.title);
-    print(product.productDescription);
-    print(product.price);
-    print(product.rating);
-    print(product.imageUrl);
-    print(product.images);
-    print(product.isAvailableForSale);
-    print("----------------------------------------");
     products.add(product);
   }
   return products;

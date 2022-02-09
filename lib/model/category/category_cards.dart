@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/view/build_list.dart';
 import 'package:flutter_projects/controller/category_api.dart';
+import 'package:flutter_projects/view/category/category_list_item.dart';
 
 class CategoryCards extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _CategoryCards extends State<CategoryCards> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var categories = snapshot.data ?? [];
-          return buildList(context, categories);
+          return buildList(context, categories, CategoryListItem);
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }

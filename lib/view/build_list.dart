@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/view/category_list_item.dart';
 
-GridView buildList(context, categories,){
+GridView buildList(context, item, type,){
   return GridView.builder(
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 300,
-        childAspectRatio: 1,
-        crossAxisSpacing: 0.1,
-        mainAxisSpacing: 0.1,
+        maxCrossAxisExtent: 240,
+        childAspectRatio: 0.6,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
       ),
-      itemCount: categories.length,
+      itemCount: item.length,
       itemBuilder: (context, index) {
-        var category = categories[index];
-        return CategoryListItem(category);
+        var category = item[index];
+        return type(category);
       }
   );
 }
