@@ -4,14 +4,22 @@ import 'package:flutter_projects/controller/product_api.dart';
 import 'package:flutter_projects/view/product/product_list_item.dart';
 
 class ProductCards extends StatefulWidget {
+  int? categoryId = 0;
+  ProductCards(int? categoryId) {
+    this.categoryId = categoryId;
+  }
   @override
   State<StatefulWidget> createState() {
-    return _ProductCards();
+    return _ProductCards(this.categoryId);
   }
 }
 
 class _ProductCards extends State<ProductCards> {
   late Future<List<ProductsFromQuest>> _ProductList;
+  int? categoryId = 0;
+  _ProductCards(int? categoryId) {
+    this.categoryId = categoryId;
+  }
 
   @override
   void initState() {
@@ -20,7 +28,7 @@ class _ProductCards extends State<ProductCards> {
   }
 
   void loadData(){
-    _ProductList = loadProducts();
+    _ProductList = (categoryId == 0)? loadProducts() : loadProductsByCategoryId(categoryId);
     setState(() { });
   }
 

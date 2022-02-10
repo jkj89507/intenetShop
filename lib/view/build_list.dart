@@ -10,7 +10,7 @@ GridView buildList(context, item, type,){
       ),
       itemCount: item.length,
       itemBuilder: (context, index) {
-        return type(item[index]);
+        return type(context, item[index]);
       }
   );
 }

@@ -8,7 +8,7 @@ void main() {
     title: 'InernetShop',
     initialRoute: '/',
     routes: {
-      '/products': (context) => ProductPage(),
+      '/products': (context) => ProductPage(0),
       '/categories': (context) => CategoryPage(),
     },
     home: MyScaffold(),
