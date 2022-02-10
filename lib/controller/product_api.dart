@@ -46,6 +46,17 @@ Future<List<ProductsFromQuest>> loadProducts() async {
   return products;
 }
 
-void main() {
-  loadProducts();
+Future<List<ProductsFromQuest>> loadProductsByCategoryId(int? categoryId) async {
+  dynamic response = await baseApi().apiRequest(
+      baseApi().totalQuestWithApiKey(getListProducts) +
+          '&accessToken=${accessToken}' +
+          '&categoryId=${categoryId}',
+      "GET");
+  var productsListData = response["data"];
+  List<ProductsFromQuest> products = [];
+  for (var itemData in productsListData) {
+    var product = ProductsFromQuest.fromJson(itemData);
+    products.add(product);
+  }
+  return products;
 }

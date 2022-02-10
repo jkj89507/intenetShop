@@ -2,13 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PannelControl extends StatelessWidget {
-  List<dynamic> buttonNavigateList = [["Товары",(){}],["Каталог товаров",(){}]];
+  List<dynamic> buttonNavigateList = [
+    ["Товары", "/products"],
+    ["Каталог товаров", "/categories"]
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
-      color: Colors.deepOrangeAccent,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 0.3,
+          color: Colors.black,
+        ),
+        color: Colors.white54,
+      ),
+      height: 40,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: buttonNavigateList.length,
@@ -17,10 +26,15 @@ class PannelControl extends StatelessWidget {
             int index,
         ) {
          return Padding(
-           padding: EdgeInsets.fromLTRB(3, 3, 0, 3),
+           padding: EdgeInsets.fromLTRB(3, 3, 12, 3),
            child: ElevatedButton(
-             onPressed: buttonNavigateList[index][1],
-             child: Text(buttonNavigateList[index][0], style: TextStyle(fontSize: 12)
+             style: ElevatedButton.styleFrom(
+               primary: Colors.red,
+             ),
+             onPressed: () {
+               Navigator.pushNamed(context, buttonNavigateList[index][1]);
+             },
+             child: Text(buttonNavigateList[index][0].toString().toUpperCase(), style: TextStyle(fontSize: 15)
              ),
            ),
          );

@@ -1,6 +1,3 @@
-import 'dart:html';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
@@ -8,7 +5,7 @@ dynamic ProductListItem(product,) {
   dynamic containerRatingTitle (){
     return Container(
       height: 70,
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 5),
       child: ListView(
         children: [
           Align(
@@ -44,7 +41,7 @@ dynamic ProductListItem(product,) {
 
   dynamic containerCodeImage (){
     return Container(
-      height: 160,
+      height: 120,
       child: ListView(
         children: [
           Align(
@@ -62,8 +59,8 @@ dynamic ProductListItem(product,) {
             alignment: Alignment.bottomCenter,
             child: Image.network(
               product.imageUrl,
-              width: 140,
-              height: 140,
+              width: 100,
+              height: 100,
             ),
           ),
         ]
@@ -73,7 +70,7 @@ dynamic ProductListItem(product,) {
 
   dynamic containerBuyButton () {
     return Container(
-      margin: EdgeInsets.only(top: 50),
+      margin: EdgeInsets.only(top: 20),
       child: Align(
         alignment: Alignment.bottomLeft,
         child: ElevatedButton(

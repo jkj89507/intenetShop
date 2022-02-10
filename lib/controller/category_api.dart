@@ -40,3 +40,12 @@ Future<List<CategoriesFromQuest>> loadCategories() async {
   }
   return categories;
 }
+
+main() {
+  loadCategories().then((value) {
+    for (var i = 0; i < value.length; i++) {
+      print(value[i].categoryId);
+      print(value[i].title);
+    }
+  });
+}

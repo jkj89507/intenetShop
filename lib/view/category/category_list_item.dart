@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_projects/product_page.dart';
 
 dynamic CategoryListItem(category,) {
   return Container(
-    // move view/category_list_item.dart, CategoryListItem(category: category,)
     padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
-    margin: EdgeInsets.fromLTRB(3, 5, 0, 0),
+    margin: EdgeInsets.fromLTRB(1, 5, 0, 0),
     child: ElevatedButton(
-      onPressed: () {},
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white54),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.white54,),
       ),
-      child: Center(
-        child: Column (
-            children: [
-              Image.network(category.imageUrl, width: 140),
-              Text(
+      child: Container(
+        padding: EdgeInsets.only(top: 50),
+        child: ListView(
+          children: [
+            Image.network(
+              category.imageUrl,
+              width: 140,
+              height: 140,
+            ),
+            Center(
+              child: Text(
                   category.title,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 14,
                     color: Colors.black,
                   )
               ),
-            ]
+            ),
+          ],
         ),
       ),
+      onPressed: () {
+      },
     ),
   );
 }

@@ -30,17 +30,20 @@ class _CategoryCards extends State<CategoryCards> {
         child: CircularProgressIndicator(),
       );
     }
-    return FutureBuilder<List<CategoriesFromQuest>>(
-      future: _categoryList,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          var categories = snapshot.data ?? [];
-          return buildList(context, categories, CategoryListItem);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-        return const CircularProgressIndicator();
-      },
+    return Container(
+      margin: EdgeInsets.only(top: 40),
+      child: FutureBuilder<List<CategoriesFromQuest>>(
+        future: _categoryList,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var categories = snapshot.data ?? [];
+            return buildList(context, categories, CategoryListItem);
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return const CircularProgressIndicator();
+        },
+      ),
     );
     throw UnimplementedError();
   }
