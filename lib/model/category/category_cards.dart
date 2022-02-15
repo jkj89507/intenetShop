@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'category.dart';
 import 'package:flutter_projects/view/build_list.dart';
 import 'package:flutter_projects/controller/category_api.dart';
 import 'package:flutter_projects/view/category/category_list_item.dart';
@@ -11,7 +12,7 @@ class CategoryCards extends StatefulWidget {
 }
 
 class _CategoryCards extends State<CategoryCards> {
-  late Future<List<CategoriesFromQuest>> _categoryList;
+  late Future<List<Category>> _categoryList;
   @override
   void initState() {
     super.initState();
@@ -19,7 +20,7 @@ class _CategoryCards extends State<CategoryCards> {
   }
 
   void loadData(){
-    _categoryList = loadCategories();
+    _categoryList = CategoryApi().loadCategories();
     setState(() { });
   }
 
@@ -32,7 +33,7 @@ class _CategoryCards extends State<CategoryCards> {
     }
     return Container(
       margin: EdgeInsets.only(top: 40),
-      child: FutureBuilder<List<CategoriesFromQuest>>(
+      child: FutureBuilder<List<Category>>(
         future: _categoryList,
         builder: (context, snapshot) {
           if (snapshot.hasData) {

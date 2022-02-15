@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/view/build_list.dart';
 import 'package:flutter_projects/controller/product_api.dart';
+import 'package:flutter_projects/view/build_list.dart';
+import 'product.dart';
 import 'package:flutter_projects/view/product/product_list_item.dart';
 
 class ProductCards extends StatefulWidget {
@@ -15,7 +16,8 @@ class ProductCards extends StatefulWidget {
 }
 
 class _ProductCards extends State<ProductCards> {
-  late Future<List<ProductsFromQuest>> _ProductList;
+  late Future<List<Product
+  >> _ProductList;
   int? categoryId = 0;
   _ProductCards(int? categoryId) {
     this.categoryId = categoryId;
@@ -28,7 +30,7 @@ class _ProductCards extends State<ProductCards> {
   }
 
   void loadData(){
-    _ProductList = (categoryId == 0)? loadProducts() : loadProductsByCategoryId(categoryId);
+    _ProductList = (categoryId == 0)? ProductApi().loadProducts() : ProductApi().loadProductsByCategoryId(categoryId);
     setState(() { });
   }
 
@@ -41,7 +43,8 @@ class _ProductCards extends State<ProductCards> {
     }
     return Container(
       margin: EdgeInsets.only(top: 40),
-      child: FutureBuilder<List<ProductsFromQuest>>(
+      child: FutureBuilder<List<Product
+      >>(
       future: _ProductList,
       builder: (context, snapshot) {
         if (snapshot.hasData) {

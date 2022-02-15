@@ -1,9 +1,7 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/product_page.dart';
 
-dynamic CategoryListItem(context, category,) {
+StatelessWidget CategoryListItem(context, category,) {
   return Container(
     padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
     margin: EdgeInsets.fromLTRB(1, 5, 0, 0),

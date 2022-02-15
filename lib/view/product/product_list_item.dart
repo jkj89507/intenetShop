@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:flutter_rating_bar/flutter_rating_bar.dart";
 
-dynamic ProductListItem(context, product,) {
+StatelessWidget ProductListItem(context, product,) {
   dynamic containerRatingTitle (){
     return Container(
       height: 70,

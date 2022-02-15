@@ -1,62 +1,36 @@
 import 'base_api.dart';
+import 'package:flutter_projects/model/product/product.dart';
 
 const String getListProducts =
     'http://ostest.whitetigersoft.ru/api/common/product/list';
 
-class ProductsFromQuest {
-  final int productId;
-  final String title;
-  final String ?productDescription;
-  final int ?price;
-  final int ?rating;
-  final String imageUrl;
-  final List<dynamic> images;
-  final int isAvailableForSale;
-
-  const ProductsFromQuest({
-    required this.productId,
-    required this.title,
-    required this.productDescription,
-    required this.price,
-    required this.rating,
-    required this.imageUrl,
-    required this.images,
-    required this.isAvailableForSale
-  });
-
-  factory ProductsFromQuest.fromJson(Map<String, dynamic> json) {
-    return ProductsFromQuest(productId: json["productId"], title: json["title"],
-                            productDescription: json["productDescription"], price: json["price"],
-                            rating: json["rating"], imageUrl: json["imageUrl"],
-                            images: json["images"], isAvailableForSale: json["isAvailableForSale"]);
+class ProductApi {
+  Future<List<Product>> loadProducts() async {
+    dynamic response = await baseApi().apiRequest(
+        baseApi().totalQuestWithApiKey(getListProducts) +
+            '&accessToken=$accessToken',
+        "GET");
+    var productsListData = response["data"];
+    List<Product> products = [];
+    for (var itemData in productsListData) {
+      var product = Product.fromJson(itemData);
+      products.add(product);
+    }
+    return products;
   }
-}
 
-Future<List<ProductsFromQuest>> loadProducts() async {
-  dynamic response = await baseApi().apiRequest(
-      baseApi().totalQuestWithApiKey(getListProducts) +
-          '&accessToken=${accessToken}',
-      "GET");
-  var productsListData = response["data"];
-  List<ProductsFromQuest> products = [];
-  for (var itemData in productsListData) {
-    var product = ProductsFromQuest.fromJson(itemData);
-    products.add(product);
+  Future<List<Product>> loadProductsByCategoryId(int? categoryId) async {
+    dynamic response = await baseApi().apiRequest(
+        baseApi().totalQuestWithApiKey(getListProducts) +
+            '&accessToken=$accessToken' +
+            '&categoryId=$categoryId',
+        "GET");
+    var productsListData = response["data"];
+    List<Product> products = [];
+    for (var itemData in productsListData) {
+      var product = Product.fromJson(itemData);
+      products.add(product);
+    }
+    return products;
   }
-  return products;
-}
-
-Future<List<ProductsFromQuest>> loadProductsByCategoryId(int? categoryId) async {
-  dynamic response = await baseApi().apiRequest(
-      baseApi().totalQuestWithApiKey(getListProducts) +
-          '&accessToken=${accessToken}' +
-          '&categoryId=${categoryId}',
-      "GET");
-  var productsListData = response["data"];
-  List<ProductsFromQuest> products = [];
-  for (var itemData in productsListData) {
-    var product = ProductsFromQuest.fromJson(itemData);
-    products.add(product);
-  }
-  return products;
 }

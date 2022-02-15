@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_projects/controller/category_api.dart';
+import 'package:flutter_projects/model/category/category.dart';
 
 // void main() {
 //   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
