@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/controller/category_api.dart';
-import 'package:flutter_projects/model/category/category.dart';
-import 'product_page.dart';
-import 'package:flutter_projects/view/base/base_page.dart';
 import 'package:flutter_projects/model/pannel_control.dart';
+import 'package:flutter_projects/model/category/category.dart';
+import 'package:flutter_projects/view/base/base_page.dart';
+import 'product_page.dart';
 
 class CategoryPage extends BasePage {
   @override
@@ -34,8 +34,11 @@ class _CategoryPageState extends BasePageState<CategoryPage> {
       );
     }
     return Scaffold(
-      floatingActionButton: PannelControl(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      // floatingActionButton: PannelControl(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      appBar: AppBar(
+        title: PannelControl(),
+      ),
       body: buildBody(),
     );
   }
@@ -43,6 +46,7 @@ class _CategoryPageState extends BasePageState<CategoryPage> {
   @override
   Widget buildBody() {
     return Container(
+      margin: const EdgeInsets.only(top: 40),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200,
@@ -59,39 +63,48 @@ class _CategoryPageState extends BasePageState<CategoryPage> {
   }
 }
 
-StatelessWidget CategoryListItem(context, category,) {
-  return Container(
-    padding: EdgeInsets.fromLTRB(5, 5, 5, 7),
-    margin: EdgeInsets.fromLTRB(1, 5, 0, 0),
-    child: ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.white54,),
-      ),
-      child: Container(
-        padding: EdgeInsets.only(top: 50),
-        child: ListView(
-          children: [
-            Image.network(
-              category.imageUrl,
-              width: 140,
-              height: 140,
-            ),
-            Center(
-              child: Text(
-                  category.title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                  )
-              ),
-            ),
-          ],
+class CategoryListItem extends StatelessWidget {
+  BuildContext ?context;
+  Category ?category;
+  CategoryListItem(BuildContext context,Category category,) {
+    this.context = context;
+    this.category = category;
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(5, 5, 5, 7),
+      margin: const EdgeInsets.fromLTRB(1, 5, 0, 0),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.white54,),
         ),
+        child: Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: ListView(
+            children: [
+              Image.network(
+                category!.imageUrl,
+                width: 140,
+                height: 140,
+              ),
+              Center(
+                child: Text(
+                    category!.title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    )
+                ),
+              ),
+            ],
+          ),
+        ),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => ProductPage(category!.categoryId, category!.title)));
+        },
       ),
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProductPage(category.categoryId)));
-      },
-    ),
-  );
+    );
+  }
 }
