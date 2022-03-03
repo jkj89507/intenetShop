@@ -1,10 +1,10 @@
-import 'base_api.dart';
+import 'package:flutter_projects/controller/base_api.dart';
 import 'package:flutter_projects/model/product/product.dart';
 
 class ProductApi {
   final String getListProducts = 'api/common/product/list';
   Future<List<Product>> loadProducts(int? offset) async {
-    dynamic response = await baseApi().sendGetRequest(
+    dynamic response = await BaseApi().sendGetRequest(
         endPoint: getListProducts,
         params: {"offset": offset.toString()}
     );
@@ -18,7 +18,7 @@ class ProductApi {
   }
 
   Future<List<Product>> loadProductsByCategoryId(int? categoryId) async {
-    dynamic response = await baseApi().sendGetRequest(
+    dynamic response = await BaseApi().sendGetRequest(
         endPoint: getListProducts,
         params: {"categoryId" : categoryId.toString()}
     );
