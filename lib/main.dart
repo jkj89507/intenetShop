@@ -10,17 +10,6 @@ void main() {
       '/products': (context) => ProductPage(0, ""),
       '/categories': (context) => CategoryPage(),
     },
-    home: MyScaffold(),
+    home: CategoryPage(),
   ));
-}
-
-class MyScaffold extends StatelessWidget {
-  const MyScaffold({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: CategoryPage(),
-    );
-  }
 }

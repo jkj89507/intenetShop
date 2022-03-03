@@ -3,6 +3,7 @@ import 'package:flutter_projects/controller/category_api.dart';
 import 'package:flutter_projects/model/pannel_control.dart';
 import 'package:flutter_projects/model/category/category.dart';
 import 'package:flutter_projects/view/base/base_page.dart';
+import 'package:flutter_projects/view/components/category_list_item.dart';
 import 'product_page.dart';
 
 class CategoryPage extends BasePage {
@@ -28,14 +29,12 @@ class _CategoryPageState extends BasePageState<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_categoryList == null) {
+    if (_categoryList.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
     return Scaffold(
-      // floatingActionButton: PannelControl(),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
       appBar: AppBar(
         title: PannelControl(),
       ),
@@ -56,54 +55,8 @@ class _CategoryPageState extends BasePageState<CategoryPage> {
        ),
         itemCount: _categoryList.length,
         itemBuilder: (context, index) {
-          return CategoryListItem(context, _categoryList[index]);
+          return CategoryListItem(_categoryList[index]);
         }
-      ),
-    );
-  }
-}
-
-class CategoryListItem extends StatelessWidget {
-  BuildContext ?context;
-  Category ?category;
-  CategoryListItem(BuildContext context,Category category,) {
-    this.context = context;
-    this.category = category;
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(5, 5, 5, 7),
-      margin: const EdgeInsets.fromLTRB(1, 5, 0, 0),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.white54,),
-        ),
-        child: Container(
-          padding: const EdgeInsets.only(top: 50),
-          child: ListView(
-            children: [
-              Image.network(
-                category!.imageUrl,
-                width: 140,
-                height: 140,
-              ),
-              Center(
-                child: Text(
-                    category!.title,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                    )
-                ),
-              ),
-            ],
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProductPage(category!.categoryId, category!.title)));
-        },
       ),
     );
   }
